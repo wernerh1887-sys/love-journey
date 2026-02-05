@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Love Journey</title>
+    <style>
+        :root {
+            --neon-pink: #ff0080;
+            --neon-blue: #00eaff;
+            --gold: #ffcc00;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: #000; color: #fff; font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        /* --- ব্যাকগ্রাউন্ড সিন --- */
+        .scene-container {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+            background: radial-gradient(circle at 50% 30%, #1a1a2e 0%, #000 90%);
+        }
+
+        .moon {
+            position: absolute; top: 4%; right: 6%;
+            width: 45px; height: 45px; background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(255,255,255,0.8);
+        }
+
+        .tree {
+            position: absolute; bottom: 12%; right: -5px;
+            width: 70px; height: 110px; background: #0f0f0f;
+            border-radius: 60% 60% 0 0; opacity: 0.95;
+            transform-origin: bottom center;
+            animation: treeSway 6s ease-in-out infinite alternate;
+        }
+        @keyframes treeSway { from { transform: rotate(1deg); } to { transform: rotate(-2deg); } }
+
+        .house-container {
+            position: absolute; bottom: 12%; left: 50%;
+            transform: translateX(-50%);
+            width: 110px; height: 90px;
+            z-index: 3;
+        }
+        .house-body {
+            width: 100%; height: 100%; background: #2b1b17;
+            position: absolute; bottom: 0;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+        }
+        .roof {
+            position: absolute; top: -35px; left: -5px;
+            width: 0; height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 40px solid #1a100e;
+        }
+        .window {
+            position: absolute; top: 30px; left: 40px;
+            width: 30px; height: 25px; background: var(--gold);
+            border: 2px solid #1a100e;
+            box-shadow: 0 0 25px var(--gold);
+            animation: windowGlow 3s infinite alternate;
+        }
+        .door {
+            position: absolute; bottom: 0; left: 45px;
+            width: 20px; height: 35px; background: #150b09;
+        }
+        @keyframes windowGlow { 0% { opacity: 0.6; } 100% { opacity: 1; box-shadow: 0 0 35px var(--gold); } }
+
+        /* --- ছায়াময় ফুলবাগান --- */
+        .flower-garden-shadow {
+            position: absolute; bottom: 11%; left: 50%;
+            transform: translateX(-50%); width: 160px; height: 50px;
+            z-index: 4; pointer-events: none;
+        }
+        .plant-cluster {
+            position: absolute; bottom: 0; background: #0a1a0a; 
+            border-radius: 50% 50% 40% 40%; opacity: 0.8; 
+            transform-origin: bottom center;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.5) inset;
+            animation: gardenSway 5s ease-in-out infinite alternate;
+        }
+        .p1 { left: 5%; width: 45px; height: 35px; animation-delay: 0s; }
+        .p2 { left: 35%; width: 55px; height: 45px; z-index: 1; background: #0f220f; animation-delay: 1s; }
+        .p3 { right: 5%; width: 40px; height: 30px; animation-delay: 0.5s; }
+        @keyframes gardenSway {
+            0% { transform: rotate(1deg) skewX(2deg); }
+            100% { transform: rotate(-2deg) skewX(-2deg); }
+        }
+        .p2::after {
+            content: ''; position: absolute; top: 15px; left: 15px;
+            width: 4px; height: 4px; background: #300; 
+            border-radius: 50%; box-shadow: 20px 5px 0 #003, 5px 15px 0 #300; opacity: 0.4;
+        }
+
+        .garden-grass {
+            position: absolute; bottom: 0; width: 100%; height: 16%;
+            background: linear-gradient(to top, #021a02 20%, transparent 100%);
+            z-index: 1;
+        }
+
+        /* --- মেইন লেআউট --- */
+        .main-content {
+            position: relative; z-index: 10;
+            height: 100vh; width: 100%;
+            display: flex; flex-direction: column;
+        }
+
+        header {
+            text-align: center; padding: 15px 10px 5px;
+            flex-shrink: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        }
+        h1 {
+            color: var(--neon-pink); font-size: 1.6rem; margin: 0;
+            text-shadow: 0 0 15px var(--neon-pink); letter-spacing: 1px;
+        }
+        p.subtitle { color: #ccc; margin-top: 3px; font-size: 0.8rem; opacity: 0.8; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px; padding: 10px 15px;
+            width: 100%; box-sizing: border-box;
+            align-content: start;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px; padding: 5px;
+            text-align: center; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            height: 85px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+
+        .mini-heart {
+            position: absolute; top: 5px; right: 5px;
+            font-size: 10px; color: rgba(255, 0, 128, 0.6);
+            animation: pulseHeart 1.5s infinite;
+        }
+        @keyframes pulseHeart { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+
+        .card::after {
+            content: ''; position: absolute; inset: 0;
+            border-radius: 15px; padding: 1px;
+            background: linear-gradient(45deg, transparent, var(--neon-blue), transparent, var(--neon-pink));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+        }
+
+        .card:active { transform: scale(0.96); background: rgba(255,255,255,0.1); }
+        .card h3 { margin: 3px 0; font-size: 0.85rem; color: #fff; font-weight: 600; text-shadow: 0 0 5px rgba(0,234,255,0.5); }
+        .card span.icon { font-size: 1.8rem; display: block; filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
+        .card p { font-size: 0.65rem; color: #bbb; margin: 0; }
+
+        footer {
+            text-align: center; padding: 8px; font-size: 0.7rem;
+            color: #888; position: absolute; bottom: 0; width: 100%;
+            background: rgba(0,0,0,0.6);
+        }
+        footer a { color: var(--neon-blue); text-decoration: none; }
+
+        /* --- মডাল স্টাইল --- */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000; justify-content: center; align-items: center;
+            backdrop-filter: blur(6px);
+        }
+
+        .modal-box {
+            background: linear-gradient(145deg, #181818, #2a2a2a);
+            width: 85%; max-width: 340px;
+            padding: 30px 20px 25px;
+            border-radius: 25px;
+            border: 1px solid var(--neon-pink);
+            text-align: center; position: relative;
+            box-shadow: 0 0 50px rgba(255, 0, 127, 0.3);
+            animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes zoomIn { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .close-icon-btn {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(255,255,255,0.1); color: #fff; border: none;
+            width: 28px; height: 28px; border-radius: 50%;
+            font-size: 14px; cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+        .close-icon-btn:hover { background: #f00; }
+
+        .modal-emoji {
+            font-size: 3.5rem; display: inline-block;
+            margin-bottom: 5px; 
+            animation: gentleBounce 2s infinite ease-in-out;
+            filter: drop-shadow(0 0 20px var(--neon-pink));
+        }
+        @keyframes gentleBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.1); }
+        }
+
+        .modal-title { font-size: 1.3rem; color: var(--neon-pink); margin-bottom: 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        
+        .modal-text { 
+            font-size: 1rem; color: #ddd; margin-bottom: 15px; 
+            line-height: 1.5; min-height: 60px;
+            white-space: pre-wrap;
+        }
+        
+        .cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .romantic-extra {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 2s ease, transform 2s ease;
+            text-shadow: 0 0 10px var(--gold);
+        }
+        .romantic-extra.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn { padding: 10px 30px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; margin: 5px; font-size: 0.95rem; }
+        .btn-yes { background: var(--neon-pink); color: white; box-shadow: 0 0 20px var(--neon-pink); width: 100px; }
+        .btn-no { background: #fff; color: #000; position: absolute; width: 80px; transition: 0.15s; }
+
+        .falling-item {
+            position: fixed; top: -50px; z-index: 2000;
+            pointer-events: none; opacity: 0;
+            will-change: transform, opacity, filter;
+        }
+
+        @keyframes realisticFall {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; filter: blur(2px); }
+            20% { opacity: 1; filter: blur(0px) brightness(1.2); }
+            50% { transform: translate(var(--sway), 50vh) rotate(180deg); filter: blur(1px); }
+            100% { transform: translate(calc(var(--sway) * -1), 110vh) rotate(360deg); opacity: 0; filter: blur(4px); }
+        }
+
+        .firefly {
+            position: fixed; width: 3px; height: 3px; background: #eaff00;
+            border-radius: 50%; box-shadow: 0 0 8px #eaff00;
+            animation: fly 25s infinite linear; pointer-events: none; z-index: 5;
+        }
+        @keyframes fly {
+            0% { transform: translate(0,0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translate(var(--mx), var(--my)); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="suno.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="scene-container">
+        <div class="moon"></div>
+        <div class="tree"></div>
+        <div class="house-container">
+            <div class="roof"></div>
+            <div class="house-body">
+                <div class="window"></div>
+                <div class="door"></div>
+            </div>
+        </div>
+        <div class="flower-garden-shadow">
+            <div class="plant-cluster p1"></div>
+            <div class="plant-cluster p2"></div>
+            <div class="plant-cluster p3"></div>
+        </div>
+        <div class="garden-grass"></div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>❤️ My Love Journey ❤️</h1>
+            <p class="subtitle">Touch a card to feel the Emotion</p>
+        </header>
+
+        <div class="grid">
+            <div class="card" onclick="openCard('rose')">
+                <div class="mini-heart">🌹</div><span class="icon">🌹</span><h3>Rose Day</h3><p>7 Feb</p>
+            </div>
+            <div class="card" onclick="openCard('propose')">
+                <div class="mini-heart">💍</div><span class="icon">💍</span><h3>Propose Day</h3><p>8 Feb</p>
+            </div>
+            <div class="card" onclick="openCard('chocolate')">
+                <div class="mini-heart">🍫</div><span class="icon">🍫</span><h3>Chocolate Day</h3><p>9 Feb</p>
+            </div>
+            <div class="card" onclick="openCard('teddy')">
+                <div class="mini-heart">🧸</div><span class="icon">🧸</span><h3>Teddy Day</h3><p>10 Feb</p>
+            </div>
+            <div class="card" onclick="openCard('promise')">
+                <div class="mini-heart">🤞</div><span class="icon">🤞</span><h3>Promise Day</h3><p>11 Feb</p>
+            </div>
+            <div class="card" onclick="openCard('hug')">
+                <div class="mini-heart">🤗</div><span class="icon">🤗</span><h3>Hug Day</h3><p>12 Feb</p>
+            </div>
+            <div class="card" onclick="openCard('kiss')">
+                <div class="mini-heart">💋</div><span class="icon">💋</span><h3>Kiss Day</h3><p>13 Feb</p>
+            </div>
+            <div class="card" onclick="openCard('val')">
+                <div class="mini-heart">❤️</div><span class="icon">💝</span><h3>Valentine's</h3><p>14 Feb</p>
+            </div>
+        </div>
+
+        <footer>
+            Developed By <a href="https://www.facebook.com/sabbir.hasan.103650" style="color:#FFD700;" target="_blank">Sabbir Hasan Parosh</a>
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box" id="modal-content">
+            </div>
+    </div>
+
+    <script>
+        // --- মিউজিক লজিক (অটো প্লে চেষ্টা - প্রথম ক্লিকে) ---
+        const audio = document.getElementById('bg-music');
+        audio.volume = 0.2;
+
+        // ওয়েবসাইটে যেকোনো জায়গায় প্রথম ক্লিকেই গান বাজবে
+        function initMusic() {
+            audio.play().then(() => {
+                // গান বাজলে ইভেন্ট লিসেনার রিমুভ করে দেব
+                document.removeEventListener('click', initMusic);
+                document.removeEventListener('touchstart', initMusic);
+            }).catch(e => {
+                // যদি ব্যর্থ হয়, পরের ক্লিকের জন্য অপেক্ষা করবে
+                console.log("Waiting for user interaction...");
+            });
+        }
+
+        document.addEventListener('click', initMusic);
+        document.addEventListener('touchstart', initMusic);
+
+        function createFireflies() {
+            for(let i=0; i<30; i++) {
+                let f = document.createElement('div');
+                f.className = 'firefly';
+                f.style.left = Math.random() * 100 + 'vw';
+                f.style.top = Math.random() * 100 + 'vh';
+                f.style.setProperty('--mx', (Math.random() * 200 - 100) + 'vw');
+                f.style.setProperty('--my', (Math.random() * 200 - 100) + 'vh');
+                f.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                document.body.appendChild(f);
+            }
+        }
+        createFireflies();
+
+        let typingTimeout;
+
+        function openCard(type) {
+            const modal = document.getElementById('modal');
+            const box = document.getElementById('modal-content');
+            modal.style.display = 'flex';
+            
+            // কার্ড ওপেন করার সময়ও মিউজিক বাজানোর চেষ্টা করা হবে (ব্যাকআপ)
+            if (audio.paused) {
+                audio.play().catch(e => console.log(e));
+            }
+            
+            let emoji = '', title = '', text = '', btn = '', magicQuote = '';
+            let closeBtnHTML = `<button class="close-icon-btn" onclick="closeModal()">✕</button>`;
+
+            if (type === 'rose') {
+                emoji = '🌹'; title = 'Happy Rose Day!';
+                text = 'গোলাপের পাপড়ির মতো তোমার মন,\nতোমাকেই দিলাম আমার সারাজীবন।';
+                magicQuote = 'Only for You ✨';
+                triggerAtmosphericRain('🌹');
+            } 
+            else if (type === 'propose') {
+                emoji = '💍'; title = 'Will You Be Mine?';
+                text = 'আজ মনের সব সাহস নিয়ে বলছি,\nতুমি কি আমার শেষ ঠিকানা হবে?';
+                magicQuote = 'Say Yes! ❤️';
+                triggerAtmosphericRain('💍');
+                btn = `<div style="height: 60px; position: relative; margin-top:10px; display: flex; justify-content: center; align-items: center;">
+                        <button class="btn btn-yes" onclick="alert('Love You Forever! ❤️')">Yes</button>
+                        <button class="btn btn-no" id="runaway-btn" style="position: absolute; right: 10px;">No</button>
+                       </div>`;
+                setTimeout(() => setupRunawayButton(), 100);
+            }
+            else if (type === 'chocolate') {
+                emoji = '🍫'; title = 'Sweet Chocolate Day!';
+                text = 'আমাদের সম্পর্কটা হোক এই চকলেটের মতোই মিষ্টি,\nযা কখনো ফুরোবে না।';
+                magicQuote = 'Sweetest Addiction 🍫';
+                triggerAtmosphericRain('🍫');
+            }
+            else if (type === 'teddy') {
+                emoji = '🧸'; title = 'Cute Teddy Day!';
+                text = 'এই টেডি বিয়ারটি তোমাকে পাঠালাম,\nযেন একাকি মুহূর্তে এটি তোমাকে সঙ্গ দেয়।';
+                magicQuote = 'Warm Hugs 🤗';
+                triggerAtmosphericRain('🧸');
+            }
+            else if (type === 'promise') {
+                emoji = '🤞'; title = 'Happy Promise Day!';
+                text = 'কথা দিচ্ছি— ছায়ার মতো পাশে থাকবো,\nসুখে-দুঃখে কখনো হাত ছাড়বো না।';
+                magicQuote = 'Forever & Always 🤞';
+                triggerAtmosphericRain('✨');
+            }
+            else if (type === 'hug') {
+                emoji = '🤗'; title = 'Happy Hug Day!';
+                text = 'সব অভিমান ভুলে এসো আজ জড়িয়ে ধরি,\nহারিয়ে যাই ভালোবাসার দুনিয়ায়।';
+                magicQuote = 'My Safe Place 🏡';
+                triggerAtmosphericRain('🤗');
+            }
+            else if (type === 'kiss') {
+                emoji = '💋'; title = 'Happy Kiss Day!';
+                text = 'আমার হৃদয়ের সবটুকু ভালোবাসা\nআজ তোমার জন্য।';
+                magicQuote = 'Soul Connection 💋';
+                triggerAtmosphericRain('💋');
+            }
+            else {
+                emoji = '💝'; title = 'Be My Valentine!';
+                text = 'তুমি আমার বর্তমান, তুমিই ভবিষ্যৎ।\nভালোবাসা দিবসের অনেক অনেক শুভেচ্ছা!';
+                magicQuote = 'My Everything ❤️';
+                triggerAtmosphericRain('💖');
+            }
+
+            box.innerHTML = `
+                ${closeBtnHTML}
+                <span class="modal-emoji">${emoji}</span>
+                <h2 class="modal-title">${title}</h2>
+                <p class="modal-text cursor" id="type-text"></p>
+                <div class="romantic-extra" id="magic-quote">${magicQuote}</div>
+                ${btn}
+            `;
+
+            typeWriter(text, 'type-text');
+        }
+
+        function typeWriter(txt, elementId) {
+            let i = 0;
+            const speed = 100;
+            const element = document.getElementById(elementId);
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < txt.length) {
+                    if(txt.charAt(i) === '\n') {
+                        element.innerHTML += '<br>';
+                    } else {
+                        element.innerHTML += txt.charAt(i);
+                    }
+                    i++;
+                    typingTimeout = setTimeout(type, speed);
+                } else {
+                    element.classList.remove('cursor');
+                    const quote = document.getElementById('magic-quote');
+                    if(quote) quote.classList.add('show');
+                }
+            }
+            clearTimeout(typingTimeout);
+            type();
+        }
+
+        function closeModal() {
+            clearTimeout(typingTimeout);
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function triggerAtmosphericRain(char) {
+            for(let i=0; i<18; i++) {
+                let e = document.createElement('div');
+                e.className = 'falling-item';
+                e.innerText = char;
+                let size = Math.random() * 20 + 15;
+                e.style.fontSize = size + 'px';
+                e.style.left = Math.random() * 100 + 'vw';
+                let swayAmount = (Math.random() * 100 - 50) + 'px';
+                e.style.setProperty('--sway', swayAmount);
+                let duration = Math.random() * 4 + 6;
+                e.style.animation = `realisticFall ${duration}s ease-in-out forwards`;
+                e.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(e);
+                setTimeout(() => e.remove(), duration * 1000 + 3000);
+            }
+        }
+
+        function setupRunawayButton() {
+            const btn = document.getElementById('runaway-btn');
+            if(!btn) return;
+            const move = () => {
+                const x = (Math.random() * 120) - 60;
+                const y = (Math.random() * 80) - 40;
+                btn.style.transform = `translate(${x}px, ${y}px)`;
+            };
+            btn.addEventListener('mouseover', move);
+            btn.addEventListener('touchstart', (e) => { e.preventDefault(); move(); });
+            btn.addEventListener('click', (e) => { e.preventDefault(); move(); });
+        }
+    </script>
+</body>
+</html>
