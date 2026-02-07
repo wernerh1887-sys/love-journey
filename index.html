@@ -247,10 +247,15 @@
         .single-card-view .card h3 { font-size: 1.2rem; }
         .single-card-view .card p { font-size: 0.9rem; margin-top: 5px; color: var(--gold); }
 
+        /* --- ফিক্সড: ফুটার এখন ফিক্সড পজিশনে থাকবে এবং সবার উপরে থাকবে --- */
         footer {
             text-align: center; padding: 8px; font-size: 0.7rem;
-            color: #888; position: absolute; bottom: 0; width: 100%;
+            color: #888; 
+            position: fixed; /* এখানে পরিবর্তন করা হয়েছে */
+            bottom: 0; 
+            width: 100%;
             background: rgba(0,0,0,0.6);
+            z-index: 2000; /* যাতে সবার উপরে থাকে */
         }
         footer a { color: var(--neon-blue); text-decoration: none; }
 
