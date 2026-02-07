@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>My Love Journey</title>
+    <title>❤ Our Love Journey ❤</title>
     <style>
         :root {
             --neon-pink: #ff0080;
@@ -15,6 +15,7 @@
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: #000; color: #fff; font-family: 'Segoe UI', sans-serif;
             overflow: hidden;
+            cursor: none; 
         }
 
         /* --- ব্যাকগ্রাউন্ড সিন --- */
@@ -22,6 +23,49 @@
             position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; pointer-events: none;
             background: radial-gradient(circle at 50% 30%, #1a1a2e 0%, #000 90%);
+        }
+
+        /* ১. তারা (JS দিয়ে কন্ট্রোল করা হবে) */
+        .star {
+            position: absolute; background: white; border-radius: 50%;
+            box-shadow: 0 0 2px rgba(255, 255, 255, 0.5); 
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* ২. খসে পড়া তারা (Shooting Star) */
+        .shooting-star {
+            position: absolute; 
+            width: 150px; height: 2px; 
+            background: linear-gradient(-90deg, white, transparent); 
+            opacity: 0; z-index: 1;
+            filter: drop-shadow(0 0 5px white);
+        }
+        @keyframes shootRightToLeft {
+            0% { 
+                transform: translate(120vw, -10px) rotate(170deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translate(-20vw, 15vh) rotate(170deg); 
+                opacity: 0; 
+            }
+        }
+
+        /* ৩. উড়ন্ত ঝাপসা হার্ট */
+        .floating-heart {
+            position: absolute; bottom: -20px; 
+            color: rgba(255, 0, 128, 0.3); font-size: 20px;
+            animation: floatUp 10s linear forwards;
+            filter: blur(1px); z-index: 1; pointer-events: none;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            20% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
         .moon {
@@ -71,7 +115,6 @@
         }
         @keyframes windowGlow { 0% { opacity: 0.6; } 100% { opacity: 1; box-shadow: 0 0 35px var(--gold); } }
 
-        /* --- ছায়াময় ফুলবাগান --- */
         .flower-garden-shadow {
             position: absolute; bottom: 11%; left: 50%;
             transform: translateX(-50%); width: 160px; height: 50px;
@@ -111,15 +154,30 @@
         }
 
         header {
-            text-align: center; padding: 15px 10px 5px;
+            text-align: center; 
+            padding-top: 15vh; 
+            padding-bottom: 10px;
+            padding-left: 10px; padding-right: 10px;
             flex-shrink: 0;
             background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            transition: all 0.3s ease;
         }
+
         h1 {
             color: var(--neon-pink); font-size: 1.6rem; margin: 0;
             text-shadow: 0 0 15px var(--neon-pink); letter-spacing: 1px;
+            animation: titleBounce 3s infinite ease-in-out; 
         }
-        p.subtitle { color: #ccc; margin-top: 3px; font-size: 0.8rem; opacity: 0.8; }
+        @keyframes titleBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); text-shadow: 0 0 25px var(--neon-pink); }
+        }
+
+        p.subtitle { 
+            color: #ccc; 
+            margin-top: 15px; 
+            font-size: 0.8rem; opacity: 0.8; 
+        }
 
         .grid {
             display: grid;
@@ -127,6 +185,9 @@
             gap: 10px; padding: 10px 15px;
             width: 100%; box-sizing: border-box;
             align-content: start;
+            padding-top: 50px; 
+            min-height: 50vh; 
+            transition: all 0.3s ease;
         }
 
         .card {
@@ -138,7 +199,15 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             height: 85px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; 
+            display: none; 
+            cursor: none; 
+        }
+        
+        .card:hover, .card:active {
+            transform: scale(1.05) translateY(-5px); 
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue), 0 0 30px rgba(0, 234, 255, 0.2);
         }
 
         .mini-heart {
@@ -158,10 +227,25 @@
             opacity: 0.5;
         }
 
-        .card:active { transform: scale(0.96); background: rgba(255,255,255,0.1); }
         .card h3 { margin: 3px 0; font-size: 0.85rem; color: #fff; font-weight: 600; text-shadow: 0 0 5px rgba(0,234,255,0.5); }
         .card span.icon { font-size: 1.8rem; display: block; filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
         .card p { font-size: 0.65rem; color: #bbb; margin: 0; }
+
+        .single-card-view {
+            display: flex !important;
+            justify-content: center;
+            align-items: flex-start; 
+            padding-top: 60px;
+            height: 50vh;
+        }
+        .single-card-view .card {
+            width: 180px;
+            height: 180px;
+            transform: scale(1.1);
+        }
+        .single-card-view .card span.icon { font-size: 3rem; margin-bottom: 10px; }
+        .single-card-view .card h3 { font-size: 1.2rem; }
+        .single-card-view .card p { font-size: 0.9rem; margin-top: 5px; color: var(--gold); }
 
         footer {
             text-align: center; padding: 8px; font-size: 0.7rem;
@@ -170,6 +254,31 @@
         }
         footer a { color: var(--neon-blue); text-decoration: none; }
 
+        /* ৪. ম্যাজিক কার্সর ট্রেইল */
+        .cursor-trail {
+            position: fixed; width: 6px; height: 6px;
+            background: var(--neon-pink); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            box-shadow: 0 0 10px var(--neon-pink);
+            animation: fadeOutTrail 5s linear forwards;
+        }
+        @keyframes fadeOutTrail {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(3); }
+        }
+
+        /* ৫. জোনাকি পোকা (Firefly) */
+        .firefly {
+            position: fixed; width: 3px; height: 3px; background: #eaff00;
+            border-radius: 50%; box-shadow: 0 0 8px #eaff00;
+            animation: fly 25s infinite linear; pointer-events: none; z-index: 5;
+        }
+        @keyframes fly {
+            0% { transform: translate(0,0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translate(var(--mx), var(--my)); opacity: 0; }
+        }
+
         /* --- মডাল স্টাইল --- */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
@@ -177,6 +286,7 @@
             background: rgba(0, 0, 0, 0.92);
             z-index: 1000; justify-content: center; align-items: center;
             backdrop-filter: blur(6px);
+            cursor: default;
         }
 
         .modal-box {
@@ -258,15 +368,17 @@
             100% { transform: translate(calc(var(--sway) * -1), 110vh) rotate(360deg); opacity: 0; filter: blur(4px); }
         }
 
-        .firefly {
-            position: fixed; width: 3px; height: 3px; background: #eaff00;
-            border-radius: 50%; box-shadow: 0 0 8px #eaff00;
-            animation: fly 25s infinite linear; pointer-events: none; z-index: 5;
-        }
-        @keyframes fly {
-            0% { transform: translate(0,0); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translate(var(--mx), var(--my)); opacity: 0; }
+        /* ====================================================
+           MOBILE VIEW ADJUSTMENTS
+           ==================================================== 
+        */
+        @media screen and (max-width: 768px) {
+            header {
+                padding-top: 18vh; 
+            }
+            .grid {
+                padding-top: 85px; 
+            }
         }
     </style>
 </head>
@@ -296,33 +408,33 @@
 
     <div class="main-content">
         <header>
-            <h1>❤️ My Love Journey ❤️</h1>
-            <p class="subtitle">Touch a card to feel the Emotion</p>
+            <h1>❤️ Our Love Journey ❤️</h1>
+            <p class="subtitle" id="dynamic-subtitle">Touch the card to feel the Emotion</p>
         </header>
 
-        <div class="grid">
-            <div class="card" onclick="openCard('rose')">
+        <div class="grid" id="card-grid">
+            <div class="card" id="day-7" onclick="openCard('rose')">
                 <div class="mini-heart">🌹</div><span class="icon">🌹</span><h3>Rose Day</h3><p>7 Feb</p>
             </div>
-            <div class="card" onclick="openCard('propose')">
+            <div class="card" id="day-8" onclick="openCard('propose')">
                 <div class="mini-heart">💍</div><span class="icon">💍</span><h3>Propose Day</h3><p>8 Feb</p>
             </div>
-            <div class="card" onclick="openCard('chocolate')">
+            <div class="card" id="day-9" onclick="openCard('chocolate')">
                 <div class="mini-heart">🍫</div><span class="icon">🍫</span><h3>Chocolate Day</h3><p>9 Feb</p>
             </div>
-            <div class="card" onclick="openCard('teddy')">
+            <div class="card" id="day-10" onclick="openCard('teddy')">
                 <div class="mini-heart">🧸</div><span class="icon">🧸</span><h3>Teddy Day</h3><p>10 Feb</p>
             </div>
-            <div class="card" onclick="openCard('promise')">
+            <div class="card" id="day-11" onclick="openCard('promise')">
                 <div class="mini-heart">🤞</div><span class="icon">🤞</span><h3>Promise Day</h3><p>11 Feb</p>
             </div>
-            <div class="card" onclick="openCard('hug')">
+            <div class="card" id="day-12" onclick="openCard('hug')">
                 <div class="mini-heart">🤗</div><span class="icon">🤗</span><h3>Hug Day</h3><p>12 Feb</p>
             </div>
-            <div class="card" onclick="openCard('kiss')">
+            <div class="card" id="day-13" onclick="openCard('kiss')">
                 <div class="mini-heart">💋</div><span class="icon">💋</span><h3>Kiss Day</h3><p>13 Feb</p>
             </div>
-            <div class="card" onclick="openCard('val')">
+            <div class="card" id="day-14" onclick="openCard('val')">
                 <div class="mini-heart">❤️</div><span class="icon">💝</span><h3>Valentine's</h3><p>14 Feb</p>
             </div>
         </div>
@@ -338,18 +450,54 @@
     </div>
 
     <script>
-        // --- মিউজিক লজিক (অটো প্লে চেষ্টা - প্রথম ক্লিকে) ---
+        function checkDateAndShowCard() {
+            const today = new Date();
+            const currentMonth = today.getMonth() + 1; 
+            const currentDate = today.getDate();
+            const grid = document.getElementById('card-grid');
+            const subTitle = document.getElementById('dynamic-subtitle');
+
+            for (let i = 7; i <= 14; i++) {
+                const card = document.getElementById('day-' + i);
+                if(card) card.style.display = 'none';
+            }
+
+            if (currentMonth === 2) { 
+                if (currentDate >= 7 && currentDate <= 14) {
+                    const activeCard = document.getElementById('day-' + currentDate);
+                    if (activeCard) {
+                        activeCard.style.display = 'flex';
+                        grid.classList.add('single-card-view');
+                        grid.style.gridTemplateColumns = 'none';
+                        subTitle.innerText = "Today's Special Card for You 💖";
+                    }
+                } else if (currentDate > 14) {
+                    grid.classList.remove('single-card-view');
+                    grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                    for (let i = 7; i <= 14; i++) {
+                        document.getElementById('day-' + i).style.display = 'flex';
+                    }
+                    subTitle.innerText = "Our Beautiful Love Journey ❤️";
+                } else {
+                    subTitle.innerText = "Love Journey Starts on 7th Feb! ⏳";
+                }
+            } else {
+                 grid.classList.remove('single-card-view');
+                 grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                 for (let i = 7; i <= 14; i++) {
+                     document.getElementById('day-' + i).style.display = 'flex';
+                 }
+            }
+        }
+
         const audio = document.getElementById('bg-music');
         audio.volume = 0.2;
 
-        // ওয়েবসাইটে যেকোনো জায়গায় প্রথম ক্লিকেই গান বাজবে
         function initMusic() {
             audio.play().then(() => {
-                // গান বাজলে ইভেন্ট লিসেনার রিমুভ করে দেব
                 document.removeEventListener('click', initMusic);
                 document.removeEventListener('touchstart', initMusic);
             }).catch(e => {
-                // যদি ব্যর্থ হয়, পরের ক্লিকের জন্য অপেক্ষা করবে
                 console.log("Waiting for user interaction...");
             });
         }
@@ -357,19 +505,102 @@
         document.addEventListener('click', initMusic);
         document.addEventListener('touchstart', initMusic);
 
+        // --- আপডেট ১: তারার রিয়েলিজম এবং পজিশন ভিত্তিক ফেইড ইফেক্ট ---
+        function createStars() {
+            const container = document.querySelector('.scene-container');
+            for(let i=0; i<40; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                
+                // পজিশন তৈরি (উপরের ৪০% অংশে)
+                const topPos = Math.random() * 40; 
+                star.style.top = topPos + '%';
+
+                // ফেইড ক্যালকুলেশন: উপরে (0%) উজ্জ্বল, নিচে (40%) অনুজ্জ্বল
+                const fadeFactor = 1 - (topPos / 50);
+
+                // ৩০% তারা মিটমিট করবে
+                if (Math.random() < 0.3) {
+                    star.style.animation = 'twinkle var(--duration) infinite ease-in-out';
+                    star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                    // বেস অপাসিটি ০.৮, সাথে ফেইড ফ্যাক্টর গুণ করা হলো
+                    star.style.opacity = 0.8 * fadeFactor; 
+                } else {
+                    // বাকি ৭০% ফিক্সড থাকবে বিভিন্ন অপাসিটিতে
+                    star.style.animation = 'none';
+                    // বেস অপাসিটি র‍্যান্ডম ০.৩ থেকে ০.৭, সাথে ফেইড ফ্যাক্টর
+                    star.style.opacity = (Math.random() * 0.4 + 0.3) * fadeFactor; 
+                }
+                
+                container.appendChild(star);
+            }
+        }
+
+        // --- আপডেট ২: খসে পড়া তারা (পথ ঠিক আছে, কিন্তু তারা ১৮০ ডিগ্রি ঘুরে আছে) ---
+        function createShootingStar() {
+            const container = document.querySelector('.scene-container');
+            setInterval(() => {
+                const star = document.createElement('div');
+                star.className = 'shooting-star';
+                star.style.animation = `shootRightToLeft 3s linear forwards`;
+                container.appendChild(star);
+                setTimeout(() => star.remove(), 3000);
+            }, 3500); 
+        }
+
+        // --- আপডেট ৩: কার্সর ট্রেইল সময় বৃদ্ধি (২ সেকেন্ড) ---
+        document.addEventListener('mousemove', function(e) {
+            createCursorTrail(e.clientX, e.clientY);
+        });
+        document.addEventListener('touchmove', function(e) {
+            createCursorTrail(e.touches[0].clientX, e.touches[0].clientY);
+        });
+
+        function createCursorTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            document.body.appendChild(trail);
+            // ২ সেকেন্ড পর রিমুভ হবে
+            setTimeout(() => trail.remove(), 5000);
+        }
+
+        // --- অন্যান্য অপরিবর্তিত ফাংশন ---
         function createFireflies() {
             for(let i=0; i<30; i++) {
                 let f = document.createElement('div');
                 f.className = 'firefly';
                 f.style.left = Math.random() * 100 + 'vw';
-                f.style.top = Math.random() * 100 + 'vh';
+                f.style.top = (Math.random() * 50 + 50) + 'vh'; 
                 f.style.setProperty('--mx', (Math.random() * 200 - 100) + 'vw');
-                f.style.setProperty('--my', (Math.random() * 200 - 100) + 'vh');
+                f.style.setProperty('--my', (Math.random() * 50 - 25) + 'vh');
                 f.style.animationDuration = (Math.random() * 10 + 15) + 's';
                 document.body.appendChild(f);
             }
         }
+
+        function createFloatingHearts() {
+            const container = document.querySelector('.scene-container');
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerText = Math.random() > 0.5 ? '❤️' : '💖';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 5 + 8) + 's';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 13000);
+            }, 1500);
+        }
+        
         createFireflies();
+        createStars();
+        createShootingStar();
+        createFloatingHearts();
 
         let typingTimeout;
 
@@ -378,7 +609,6 @@
             const box = document.getElementById('modal-content');
             modal.style.display = 'flex';
             
-            // কার্ড ওপেন করার সময়ও মিউজিক বাজানোর চেষ্টা করা হবে (ব্যাকআপ)
             if (audio.paused) {
                 audio.play().catch(e => console.log(e));
             }
@@ -388,8 +618,8 @@
 
             if (type === 'rose') {
                 emoji = '🌹'; title = 'Happy Rose Day!';
-                text = 'গোলাপের পাপড়ির মতো তোমার মন,\nতোমাকেই দিলাম আমার সারাজীবন।';
-                magicQuote = 'Only for You ✨';
+                text = 'গোলাপের পাপড়ির মতোই তোমার মন,\nতোমাকেই দিলাম আমার সারাজীবন।';
+                magicQuote = 'Only for You 🥀';
                 triggerAtmosphericRain('🌹');
             } 
             else if (type === 'propose') {
@@ -398,7 +628,7 @@
                 magicQuote = 'Say Yes! ❤️';
                 triggerAtmosphericRain('💍');
                 btn = `<div style="height: 60px; position: relative; margin-top:10px; display: flex; justify-content: center; align-items: center;">
-                        <button class="btn btn-yes" onclick="alert('Love You Forever! ❤️')">Yes</button>
+                        <button class="btn btn-yes" onclick="alert('I Knew It! 🥰 I Love You Forever! ❤️')">Yes</button>
                         <button class="btn btn-no" id="runaway-btn" style="position: absolute; right: 10px;">No</button>
                        </div>`;
                 setTimeout(() => setupRunawayButton(), 100);
@@ -512,6 +742,9 @@
             btn.addEventListener('touchstart', (e) => { e.preventDefault(); move(); });
             btn.addEventListener('click', (e) => { e.preventDefault(); move(); });
         }
+
+        checkDateAndShowCard();
+
     </script>
 </body>
 </html>
